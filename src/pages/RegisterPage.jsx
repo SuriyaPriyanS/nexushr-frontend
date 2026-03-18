@@ -1,79 +1,16 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { login, register, clearError } from '../store/authSlice'
-import { FaBolt, FaEye, FaEyeSlash } from 'react-icons/fa'
+import { register, clearError } from '../store/authSlice'
+import { FaBolt } from 'react-icons/fa'
 import { ErrorMessage, FormField, Spinner } from '../components/ui'
 import toast from 'react-hot-toast'
 import { DEPARTMENTS, ROLES } from '../utils/helpers'
 
-export function LoginPage() {
-  const dispatch = useDispatch()
-  const { user, loading, error } = useSelector((state) => state.auth)
-  const [form, setForm] = useState({ email: '', password: '' })
-  const [showPw, setShowPw] = useState(false)
-  const [successUser, setSuccessUser] = useState(null)
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error)
-    }
-  }, [error])
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    dispatch(clearError())
-
-    const action = await dispatch(login({ email: form.email, password: form.password }))
-
-    if (login.fulfilled.match(action)) {
-      setSuccessUser(action.payload)
-      toast.success('Welcome back! User data is loaded.')
-    }
-  }
-
-  return (
-    <AuthLayout
-      title="Welcome back"
-      subtitle="Sign in to your NexusHR account"
-      footer={<>Don't have an account? <Link to="/register" className="text-brand-600 font-semibold hover:underline">Register</Link></>}
-    >
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <ErrorMessage message={error} />
-        <FormField label="Email" required>
-          <input type="email" className="input-field" placeholder="you@company.com" value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })} required />
-        </FormField>
-        <FormField label="Password" required>
-          <div className="relative">
-            <input type={showPw ? 'text' : 'password'} className="input-field pr-10"
-              placeholder="Your password" value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })} required />
-            <button type="button" onClick={() => setShowPw(!showPw)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-              {showPw ? <FaEyeSlash className="h-4 w-4" /> : <FaEye className="h-4 w-4" />}
-            </button>
-          </div>
-        </FormField>
-        <button type="submit" className="btn-primary w-full justify-center py-2.5" disabled={loading}>
-          {loading ? <Spinner size="sm" /> : 'Sign In'}
-        </button>
-
-        {successUser && (
-          <div className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-800">
-            <p className="font-semibold mb-2">Authenticated base response user:</p>
-            <pre className="whitespace-pre-wrap break-words">{JSON.stringify(successUser, null, 2)}</pre>
-          </div>
-        )}
-      </form>
-    </AuthLayout>
-  )
-}
-
 export function RegisterPage() {
   const dispatch = useDispatch()
   const { user, loading, error } = useSelector((state) => state.auth)
-  const [form, setForm] = useState({ name: '',  email: '', password: '', phone: '', department: '', role: 'Employee' })
+  const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', department: '', role: 'Employee' })
   const [newUser, setNewUser] = useState(null)
 
   useEffect(() => {
@@ -105,12 +42,17 @@ export function RegisterPage() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <ErrorMessage message={error} />
         <div className="grid grid-cols-2 gap-3">
-          <FormField label=" Name" required>
-            <input className="input-field" placeholder="John" value={form.name} onChange={set('name')} required />
-          </FormField>
-          {/* <FormField label="Last Name" required>
-            <input className="input-field" placeholder="Doe" value={form.lastName} onChange={set('lastName')} required />
-          </FormField> */}
+          <div className="col-span-2">
+            <FormField label="Name" required>
+              <input
+                className="input-field w-full"
+                placeholder="John"
+                value={form.name}
+                onChange={set('name')}
+                required
+              />
+            </FormField>
+          </div>
         </div>
         <FormField label="Email" required>
           <input type="email" className="input-field" placeholder="you@company.com" value={form.email} onChange={set('email')} required />
@@ -181,3 +123,6 @@ function AuthLayout({ title, subtitle, footer, children }) {
     </div>
   )
 }
+
+export default RegisterPage
+

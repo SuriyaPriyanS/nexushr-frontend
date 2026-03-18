@@ -2,7 +2,8 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { Provider, useSelector } from 'react-redux'
 import { store } from './store'
 import AppLayout from './components/layout/AppLayout'
-import { LoginPage, RegisterPage } from './pages/AuthPages'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
 import Dashboard from './pages/Dashboard'
 import Employees from './pages/Employees'
 import Attendance from './pages/Attendance'
@@ -66,3 +67,4 @@ export default function App() {
     </Provider>
   )
 }
+

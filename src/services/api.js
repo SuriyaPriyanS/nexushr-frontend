@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const API_BASE = import.meta.env.VITE_API_URL || '/' // Dev: Vite proxy '/api' -> localhost:5000, Prod: set VITE_API_URL
 
 const api = axios.create({
   baseURL: API_BASE,
@@ -113,7 +113,12 @@ export const learningAPI = {
 // ── Documents ─────────────────────────────────────────────────────────────────
 export const documentAPI = {
   getAll: () => api.get('/api/documents'),
-  upload: (formData) => api.post('/api/documents', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  upload: (formData) => api.post('/api/documents', formData, { 
+    headers: { 
+      'Content-Type': 'multipart/form-data',
+      // Note: withCredentials: true handled by axios config, proxy preserves
+    } 
+  }),
 }
 
 // ── Expenses ──────────────────────────────────────────────────────────────────
