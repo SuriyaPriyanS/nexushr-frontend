@@ -102,5 +102,5 @@ function AuthLayout({ title, subtitle, footer, children }) {
   )
 }
 
-export default LoginPage
+export default LoginPage;
 

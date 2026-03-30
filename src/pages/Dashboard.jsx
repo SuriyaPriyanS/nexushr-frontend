@@ -84,6 +84,10 @@ export default function Dashboard() {
 
   const stats = liveStats || baseStats
   const isLoading = empLoad || leaveLoad || projLoad || attLoad
+  const displayName =
+    user?.name ||
+    [user?.firstName, user?.lastName].filter(Boolean).join(' ').trim() ||
+    'Team Member'
 
   return (
     <div className="space-y-6 animate-slide-up">
@@ -92,7 +96,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-brand-100 text-sm font-medium">Good {getGreeting()}</p>
-            <h2 className="text-2xl font-bold mt-0.5">{user?.firstName} {user?.lastName} 👋</h2>
+            <h2 className="text-2xl font-bold mt-0.5">{displayName} ðŸ‘‹</h2>
             <p className="text-brand-200 text-sm mt-1">Here's what's happening at your organization today.</p>
           </div>
           <div className="hidden md:flex items-center gap-3 bg-white/10 rounded-xl px-4 py-3">
@@ -241,7 +245,7 @@ export default function Dashboard() {
                         <p className="text-sm font-medium text-slate-800 truncate">
                           {leave.employee?.firstName || leave.employeeName || 'Employee'}
                         </p>
-                        <p className="text-xs text-slate-500">{leave.leaveType} · {formatDate(leave.startDate)}</p>
+                        <p className="text-xs text-slate-500">{leave.leaveType} Â· {formatDate(leave.startDate)}</p>
                       </div>
                       <Badge status={leave.status}>{leave.status}</Badge>
                     </div>

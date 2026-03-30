@@ -8,17 +8,21 @@ export function useFetch(apiFn, deps = []) {
   const fetch = useCallback(async () => {
     setLoading(true)
     setError(null)
+
     try {
       const res = await apiFn()
-      setData(res.data?.data || res.data)
+      const payload = Object.prototype.hasOwnProperty.call(res || {}, 'data') ? res.data : res
+      setData(Object.prototype.hasOwnProperty.call(payload || {}, 'data') ? payload.data : payload)
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to load data')
     } finally {
       setLoading(false)
     }
-  }, deps)
+  }, [apiFn, ...deps])
 
-  useEffect(() => { fetch() }, [fetch])
+  useEffect(() => {
+    fetch()
+  }, [fetch])
 
   return { data, loading, error, refetch: fetch }
 }
